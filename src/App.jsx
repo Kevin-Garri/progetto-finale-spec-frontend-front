@@ -1,30 +1,33 @@
-import React from "react";
-import { BrowersRouter } from "react-router-dom"
-
-import Header from "./components/Header"
-import GameList from "./components/GameList"
-import GameDetail from "./components/GameDetail"
-import Comparator from "./components/Comparator"
-import Favorites from "./components/Favorites"
-
-import Home from "./Pages/Home"
-import DetailPage from "./Pages/DetailPage"
-import ComparePage from "./Pages/ComparePagePage"
-import FavoritesPage from "./Pages/FavoritesPage"
-
+import { GlobalProvider } from "./context/GlobalContext"
+import { BrowserRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Home from "./Pages/Home";
+import ComparePage from "./Pages/ComparePage";
+import FavouritePage from "./Pages/FavoritePage";
+import PageDetails from "./Pages/PageDetails";
+import { NavLink } from "react-router-dom";
 
 function App() {
+
+
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/game/:id" element={<DetailPage />} />
-        <Route path="/compare" element={<ComparePage />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
-      </Routes>
-    </Router>
+    <GlobalProvider>
+      <BrowserRouter>
+        <nav className="NavBar">
+          <NavLink to="/" end className="pagina">Home</NavLink>
+          <NavLink to="/Compara" end className="pagina">Compara</NavLink>
+          <NavLink to="/Preferiti" end className="pagina">I tuoi preferiti</NavLink>
+        </nav>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/Compara" element={<ComparePage />} />
+          <Route path="/Preferiti" element={<FavouritePage />} />
+          <Route path="/Dettagli/:id" element={<PageDetails />} />
+        </Routes>
+      </BrowserRouter>
+    </GlobalProvider>
   )
 }
 
 export default App
+
