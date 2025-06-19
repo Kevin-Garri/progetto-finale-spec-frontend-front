@@ -1,4 +1,4 @@
-import { GlobalProvider } from "./context/GlobalContext"
+import { GlobalProvider } from "./Context/GlobalContext"
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";

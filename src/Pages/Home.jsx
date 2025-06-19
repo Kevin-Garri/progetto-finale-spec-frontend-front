@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useContext, useRef } from 'react';
-import { GlobalContext } from '../context/globalContext';
+import { GlobalContext } from '../Context/GlobalContext';
 import GameList from '../Components/GameList';
 
 function debounce(callback, delay) {
