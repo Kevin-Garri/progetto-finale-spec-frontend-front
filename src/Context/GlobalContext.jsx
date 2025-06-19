@@ -10,7 +10,7 @@ export function GlobalProvider({ children }) {
   const [videogame, setVideogame] = useState("");
   const [searchVideogames, setSearchVideogames] = useState([]);
 
-  // Fetch per la lista completa dei videgames
+  // Fetch per la lista completa dei videogames
   const fetchVideoGames = async () => {
     try {
       const response = await fetch(`${api_url}/videogameses`);
