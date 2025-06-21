@@ -1,6 +1,8 @@
 import { useState, useCallback, useEffect, useContext, useRef } from 'react';
 import { GlobalContext } from '../Context/GlobalContext';
 import GameList from '../Components/GameList';
+import Header from '../components/Header'; // regola il percorso se necessario
+
 
 function debounce(callback, delay) {
   let timer;
@@ -46,7 +48,12 @@ export default function Home() {
 
 
   return (
+
     <div>
+      <Header
+        search={search}
+        handleSearch={handleSearch}
+      />
       <h1>Esplora un mondo di videogiochi</h1>
       <div>
         <input
