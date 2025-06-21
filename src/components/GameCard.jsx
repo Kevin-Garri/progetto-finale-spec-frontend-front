@@ -13,7 +13,11 @@ export default function GameCard({ videogame }) {
   return (
     <div>
       <div className="max-w-sm bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-        <img className="w-full h-48 object-cover" src={videogame.imageUrl} alt={videogame.title} />
+        <img
+          className="w-full h-48 object-cover"
+          src={`/img/${videogame.imageUrl}`}
+          alt={videogame.title}
+        />
         <div className="p-4">
           <h2 className="text-xl font-bold text-gray-800">{videogame.title}</h2>
           <p className="text-sm text-gray-500 mb-2">{videogame.category}</p>
