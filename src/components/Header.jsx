@@ -1,4 +1,5 @@
 import React from 'react';
+import BoolGaming from '../assets/BoolGaming.png';
 
 const Header = ({ search, handleSearch }) => {
   return (
@@ -6,9 +7,9 @@ const Header = ({ search, handleSearch }) => {
       {/* Logo + Search Bar */}
       <div className="flex items-center space-x-4">
         <img
-          src=""
-          alt="logo"
-          className="h-8"
+          src={BoolGaming}
+          alt="Logo"
+          className="h-16 w-auto"
         />
         <input
           type="text"

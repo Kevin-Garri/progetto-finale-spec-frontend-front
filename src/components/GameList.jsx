@@ -34,7 +34,8 @@ export default function GameList({ videogames }) {
 
   useEffect(() => {
     fetchAllCategories();
-  }, [fetchAllCategories]);
+  }, []);
+
   return (
     <div className='videogames-list'>
       <button onClick={() => { setSortField('title'); setSortOrder('1'); }}>
