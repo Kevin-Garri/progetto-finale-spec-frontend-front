@@ -12,12 +12,27 @@ export function GlobalProvider({ children }) {
   const [categoryVideogames, setCategoryVideogames] = useState([])
   const [compareList, setCompareList] = useState([]);
 
-  const addToCompare = (videogame) => {
-    setCompareList(prev =>
-      prev.some(game => game.id === videogame.id)
-        ? prev
-        : [...prev, videogame]
-    );
+  const addToCompare = async (videogame) => {
+    if (videogame.imageUrl) {
+      setCompareList(prev =>
+        prev.some(game => game.id === videogame.id)
+          ? prev
+          : [...prev, videogame]
+      );
+    } else {
+      try {
+        const response = await fetch(`${api_url}/videogameses/${videogame.id}`);
+        const data = await response.json();
+        const detailedGame = data.videogames || data;
+        setCompareList(prev =>
+          prev.some(game => game.id === detailedGame.id)
+            ? prev
+            : [...prev, detailedGame]
+        );
+      } catch (error) {
+        console.error("Errore nel recupero dettagli videogioco:", error);
+      }
+    }
   };
 
   const removeFromCompare = (id) => {
@@ -39,12 +54,27 @@ export function GlobalProvider({ children }) {
 
   // Funzione per l'aggiunta ai preferiti
 
-  const addToFavorites = (videogame) => {
-    setFavorites(prev =>
-      prev.some(fav => fav.id === videogame.id)
-        ? prev
-        : [...prev, videogame]
-    );
+  const addToFavorites = async (videogame) => {
+    if (videogame.imageUrl) {
+      setFavorites(prev =>
+        prev.some(fav => fav.id === videogame.id)
+          ? prev
+          : [...prev, videogame]
+      );
+    } else {
+      try {
+        const response = await fetch(`${api_url}/videogameses/${videogame.id}`);
+        const data = await response.json();
+        const detailedGame = data.videogames || data;
+        setFavorites(prev =>
+          prev.some(fav => fav.id === detailedGame.id)
+            ? prev
+            : [...prev, detailedGame]
+        );
+      } catch (error) {
+        console.error("Errore nel recupero dettagli videogioco:", error);
+      }
+    }
   };
 
   // Funzione per la rimozione dai preferiti 
