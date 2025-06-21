@@ -69,7 +69,7 @@ export function GlobalProvider({ children }) {
 
   // fetch per il singolo videogioco attraverso l'id
 
-  const fetchVideoGameDetails = async (id) => {
+  const fetchVideoGameDetails = useCallback(async (id) => {
     try {
       const response = await fetch(`${api_url}/videogameses/${id}`);
       const data = await response.json();
@@ -78,7 +78,7 @@ export function GlobalProvider({ children }) {
       console.error("Error fetching video game details:", error);
       return null;
     }
-  }
+  }, [api_url]);
 
   // fetch per l'utilizzo dell'input della ricerca attraverso una query inserita dall'utente
 
