@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useCallback } from 'react';
 
 export const GlobalContext = createContext();
 
@@ -82,7 +82,7 @@ export function GlobalProvider({ children }) {
 
   // fetch per l'utilizzo dell'input della ricerca attraverso una query inserita dall'utente
 
-  const fetchSearchResults = async (query) => {
+  const fetchSearchResults = useCallback(async (query) => {
     try {
       const response = await fetch(`${api_url}/videogameses?search=${query}`);
       const data = await response.json();
@@ -90,7 +90,7 @@ export function GlobalProvider({ children }) {
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
-  }
+  }, [api_url]);
 
   // fetch per tutte le categorie per la selezione delle categorie
 
