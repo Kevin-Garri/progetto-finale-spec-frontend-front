@@ -14,7 +14,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-200 py-8 px-4 mt-16">
+    <footer className="bg-gray-900 text-gray-200 py-8 px-4 ">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-8 border-b border-gray-700 pb-8">
         {/* Trustpilot */}
         <div>
@@ -60,12 +60,30 @@ export default function Footer() {
             <FaTwitch className="hover:text-white cursor-pointer" />
           </div>
           <div className="flex gap-2 mt-4">
-            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" className="h-10" />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" className="h-10" />
-            <button className="bg-gray-800 border border-gray-600 rounded px-3 py-2 text-xs flex items-center gap-2 hover:bg-gray-700">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Google_Chrome_icon_%282011%29.png" alt="Chrome" className="h-5 w-5" />
-              Chrome Extention
-            </button>
+            <a
+              href="https://apps.apple.com/app/apple-store/id375380948"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                alt="App Store"
+                className="h-10"
+                style={{ cursor: "pointer" }}
+              />
+            </a>
+            <a
+              href="https://play.google.com/store"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                alt="Google Play"
+                className="h-10"
+                style={{ cursor: "pointer" }}
+              />
+            </a>
           </div>
         </div>
       </div>
