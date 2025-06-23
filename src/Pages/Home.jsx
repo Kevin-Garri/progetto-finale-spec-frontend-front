@@ -53,23 +53,20 @@ export default function Home() {
       <h1 className="text-center text-4xl font-bold text-gray-800 my-8">
         Trova i videogiochi che fanno per te!
       </h1>
-      <div>
+      <div className="flex flex-col items-center mb-8">
         <input
-          className='search-input'
+          className="w-full max-w-xl px-6 py-3 rounded-lg border-2 border-purple-300 focus:border-purple-700 focus:outline-none text-lg shadow-md"
           type="text"
           placeholder="Cerca un gioco..."
           value={search}
           onChange={handleSearch}
         />
-        {message && <p className='message'>{message}</p>}
-        {noResults && <p className='message'>Non è stato trovato nessun gioco con questo nome</p>}
+        {message && <p className="mt-2 text-purple-700 font-semibold">{message}</p>}
+        {noResults && <p className="mt-2 text-red-600 font-semibold">Non è stato trovato nessun gioco con questo nome</p>}
       </div>
-
       <div>
         <GameList videogames={Array.isArray(gameShowList) ? gameShowList : []} />
       </div>
-
-
     </div>
   )
 }

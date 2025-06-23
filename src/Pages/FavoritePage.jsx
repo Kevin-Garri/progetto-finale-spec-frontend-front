@@ -8,7 +8,8 @@ export default function FavoritePage({ }) {
 
   return (
     <div>
-      <h1>Lista preferiti</h1>
+      <h1 className="text-center text-4xl font-bold text-gray-800 my-8">
+        I tuoi preferiti 💜</h1>
       {favorites.length === 0
         ? <p>La tua pagina è vuota, aggiungi i tuoi giochi preferiti qui!</p>
         : favorites.map(fav => (

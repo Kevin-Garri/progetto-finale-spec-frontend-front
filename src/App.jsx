@@ -14,7 +14,7 @@ function App() {
     <GlobalProvider>
       <div className="min-h-screen flex flex-col">
         <BrowserRouter>
-          <nav className="flex justify-center gap-20 bg-purple-700 p-4 shadow-md">
+          <nav className="sticky top-0 z-50 flex justify-center gap-20 bg-purple-950/80 backdrop-blur-md p-8 shadow-md border-b border-purple-200">
             <NavLink
               to="/"
               end
