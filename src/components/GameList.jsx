@@ -46,7 +46,7 @@ export default function GameList({ videogames }) {
         Titolo Z-A {sortField === 'title' && "↓"}
       </button>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-4 my-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 my-6 max-w-7xl mx-auto">
         {sortedVideogames.map((videogame) => (
           <Card
             key={videogame.id}
@@ -68,7 +68,7 @@ export default function GameList({ videogames }) {
             {filteredVideogames.length === 0
               ? <p>Nessun gioco trovato per questa categoria.</p>
               : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-4 my-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 my-6 max-w-7xl mx-auto">
                   {filteredVideogames.map(videogame => (
                     <Card
                       key={videogame.id}
