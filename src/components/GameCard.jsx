@@ -19,7 +19,11 @@ export default function GameCard({ videogame }) {
           alt={videogame.title}
         />
         <div className="p-4">
-          <h2 className="text-xl font-bold text-gray-800">{videogame.title}</h2>
+          <Link to={`/Dettagli/${videogame.id}`}>
+            <h2 className="text-xl font-bold text-purple-700 hover:underline cursor-pointer">
+              {videogame.title}
+            </h2>
+          </Link>
           <p className="text-sm text-gray-500 mb-2">{videogame.category}</p>
           <p className="text-gray-800 mb-4">{videogame.description}</p>
           <div className="flex items-center justify-between">

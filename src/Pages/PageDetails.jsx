@@ -17,7 +17,8 @@ export default function PageDetails() {
   }, []);
 
   return (
-    <div>
+    <div className="flex justify-center items-center mt-20">
+
       <GameCard videogame={videogame} />
     </div>
   )

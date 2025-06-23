@@ -87,7 +87,27 @@ export function GlobalProvider({ children }) {
     try {
       const response = await fetch(`${api_url}/videogameses`);
       const data = await response.json();
-      setVideogames(data);
+
+      // Per ogni videogioco, faccio una fetch dettagliata per ottenere l'immagine
+      const detailedGamesPromises = data.map(game =>
+        fetch(`${api_url}/videogameses/${game.id}`)
+          .then(res => res.json())
+          .then(detail => {
+            const detailed = detail.videogames || detail;
+            return {
+              ...game,
+              imageUrl: detailed.imageUrl // adatta il campo se diverso
+            };
+          })
+          .catch(() => game) // fallback se errore
+      );
+
+      const detailedGamesResults = await Promise.allSettled(detailedGamesPromises);
+      const detailedGames = detailedGamesResults
+        .filter(result => result.status === "fulfilled")
+        .map(result => result.value);
+
+      setVideogames(detailedGames);
     } catch (error) {
       console.error("Error fetching tasks:", error);
     }

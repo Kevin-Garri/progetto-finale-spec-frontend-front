@@ -35,6 +35,7 @@ export default function Home() {
   }
 
   useEffect(() => {
+
     if (debouncedSearch.trim() !== '') {
       fetchSearchResults(debouncedSearch);
     }
