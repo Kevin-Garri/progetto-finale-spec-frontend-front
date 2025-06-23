@@ -50,7 +50,9 @@ export default function Home() {
   return (
 
     <div>
-      <h1>Esplora un mondo di videogiochi</h1>
+      <h1 className="text-center text-4xl font-bold text-gray-800 my-8">
+        Trova i videogiochi che fanno per te!
+      </h1>
       <div>
         <input
           className='search-input'
