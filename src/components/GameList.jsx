@@ -39,12 +39,26 @@ export default function GameList({ videogames }) {
 
   return (
     <div className='videogames-list'>
-      <button onClick={() => { setSortField('title'); setSortOrder('1'); }}>
-        Titolo A-Z {sortField === 'title' && "↑"}
-      </button>
-      <button onClick={() => { setSortField('title'); setSortOrder('-1'); }}>
-        Titolo Z-A {sortField === 'title' && "↓"}
-      </button>
+      <div className="flex justify-center gap-4 my-4">
+        <button
+          className={`px-4 py-2 rounded-lg shadow transition-colors duration-200 ${sortField === 'title' && sortOrder === '1'
+            ? 'bg-purple-700 text-white'
+            : 'bg-gray-200 text-gray-700 hover:bg-blue-100'
+            }`}
+          onClick={() => { setSortField('title'); setSortOrder('1'); }}
+        >
+          Titolo A-Z {sortField === 'title' && sortOrder === '1' && "↑"}
+        </button>
+        <button
+          className={`px-4 py-2 rounded-lg shadow transition-colors duration-200 ${sortField === 'title' && sortOrder === '-1'
+            ? 'bg-purple-700 text-white'
+            : 'bg-gray-200 text-gray-700 hover:bg-blue-100'
+            }`}
+          onClick={() => { setSortField('title'); setSortOrder('-1'); }}
+        >
+          Titolo Z-A {sortField === 'title' && sortOrder === '-1' && "↓"}
+        </button>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 my-6 max-w-7xl mx-auto">
         {sortedVideogames.map((videogame) => (

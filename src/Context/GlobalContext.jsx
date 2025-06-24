@@ -13,7 +13,7 @@ export function GlobalProvider({ children }) {
   const [compareList, setCompareList] = useState([]);
 
   const addToCompare = async (videogame) => {
-    if (videogame.imageUrl) {
+    if (videogame.imageUrl && videogame.price && videogame.rating) {
       setCompareList(prev =>
         prev.some(game => game.id === videogame.id)
           ? prev
@@ -136,7 +136,27 @@ export function GlobalProvider({ children }) {
     try {
       const response = await fetch(`${api_url}/videogameses?search=${query}`);
       const data = await response.json();
-      setSearchVideogames(data);
+
+      // Per ogni gioco trovato, recupera i dettagli (inclusa l'immagine)
+      const detailedGamesPromises = data.map(game =>
+        fetch(`${api_url}/videogameses/${game.id}`)
+          .then(res => res.json())
+          .then(detail => {
+            const detailed = detail.videogames || detail;
+            return {
+              ...game,
+              imageUrl: detailed.imageUrl // adatta il campo se diverso
+            };
+          })
+          .catch(() => game)
+      );
+
+      const detailedGamesResults = await Promise.allSettled(detailedGamesPromises);
+      const detailedGames = detailedGamesResults
+        .filter(result => result.status === "fulfilled")
+        .map(result => result.value);
+
+      setSearchVideogames(detailedGames);
     } catch (error) {
       console.error("Error fetching search results:", error);
     }

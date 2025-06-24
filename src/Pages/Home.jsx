@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useContext, useRef } from 'react';
 import { GlobalContext } from '../Context/GlobalContext';
-import GameList from '../Components/GameList';
+import GameList from '../components/GameList';
 
 
 
@@ -54,6 +54,22 @@ export default function Home() {
       <h1 className="text-center text-4xl font-bold text-gray-800 my-8">
         Trova i videogiochi che fanno per te!
       </h1>
+
+      {/* Jumbotron con video */}
+      <div className="relative w-full max-w-9xl mx-auto mb-8  overflow-hidden shadow-lg">
+        <video
+          className="w-full h-80 object-cover" // aumenta h-64 a h-80 o più
+          src="/Fortnite_Cinematic.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+          <p className="text-white text-2xl font-semibold">Scopri nuovi mondi, trova il tuo prossimo gioco preferito!</p>
+        </div>
+      </div>
+
       <div className="flex flex-col items-center mb-8">
         <input
           className="w-full max-w-xl px-6 py-3 rounded-lg border-2 border-purple-300 focus:border-purple-700 focus:outline-none text-lg shadow-md"
