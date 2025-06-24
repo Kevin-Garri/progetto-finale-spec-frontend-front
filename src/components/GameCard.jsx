@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function GameCard({ videogame }) {
 
-  const { addToFavorites, removeFromFavorites, favorites, addToCompare, compareList } = useContext(GlobalContext)
+  const { addToFavorites, removeFromFavorites, favorites, addToCompare, removeFromCompare, compareList } = useContext(GlobalContext)
 
 
   const isFavorite = favorites.some(favorite => favorite.id === videogame.id);
@@ -57,16 +57,18 @@ export default function GameCard({ videogame }) {
             {isFavorite ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
           </button>
           <button
-            onClick={() => addToCompare(videogame)}
-            disabled={isInCompare}
+            onClick={() =>
+              isInCompare
+                ? removeFromCompare(videogame.id)
+                : addToCompare(videogame)
+            }
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition
-      ${isInCompare
-                ? "bg-purple-100 text-purple-400 border border-purple-200 cursor-not-allowed"
+    ${isInCompare
+                ? "bg-purple-100 text-purple-600 border border-purple-400 hover:bg-purple-200"
                 : "bg-purple-600 text-white border border-purple-700 hover:bg-purple-700"}
-    `}
+  `}
           >
-
-            {isInCompare ? "confronto.." : "Confronta"}
+            {isInCompare ? "Rimuovere" : "Confronta"}
           </button>
         </div>
       </div>

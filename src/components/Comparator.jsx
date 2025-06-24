@@ -1,14 +1,12 @@
 import { useContext } from "react";
 import { GlobalContext } from "../Context/GlobalContext";
+import GameCard from "./GameCard";
 
 export default function Comparatore() {
-
   const { compareList, removeFromCompare } = useContext(GlobalContext);
 
-
-
   return (
-    <div>
+    <div className="px-4 md:px-12 lg:px-24">
       <h1>Comparatore Videogiochi</h1>
       {compareList.length === 0 && (
         <p>Non hai ancora selezionato videogiochi da confrontare.</p>
@@ -17,17 +15,15 @@ export default function Comparatore() {
       {compareList.length > 0 && (
         <div>
           <p>Hai selezionato {compareList.length} videogiochi da confrontare.</p>
-          <div style={{ display: "flex", gap: "2rem" }}>
+          <div
+            className="grid gap-6 justify-center
+              sm:grid-cols-1
+              md:grid-cols-2
+              lg:grid-cols-3"
+          >
             {compareList.map(game => (
-              <div key={game.id}>
-                <img src={game.imageUrl} alt={game.title} />
-                <h3>{game.title}</h3>
-                <p>Categoria: {game.category}</p>
-                <p>Prezzo: €{game.price}</p>
-                <p>Rating: {game.rating}/10</p>
-                <p>Descrizione: {game.description}</p>
-                <button onClick={() => removeFromCompare(game.id)}>Rimuovi dal confronto</button>
-              </div>
+              <GameCard key={game.id} videogame={game} />
+
             ))}
           </div>
         </div>
