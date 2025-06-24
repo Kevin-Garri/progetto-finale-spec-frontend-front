@@ -72,7 +72,7 @@ export default function GameCard({ videogame }) {
           </button>
         </div>
       </div>
-      <Link to="/">Torna alla Home</Link>
+
     </div>
   );
 }

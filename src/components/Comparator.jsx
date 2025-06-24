@@ -1,12 +1,13 @@
 import { useContext } from "react";
 import { GlobalContext } from "../Context/GlobalContext";
 import GameCard from "./GameCard";
+import { Link } from "react-router-dom";
 
 export default function Comparatore() {
   const { compareList, removeFromCompare } = useContext(GlobalContext);
 
   return (
-    <div className="flex flex-col items-center px-4 md:px-12 lg:px-24">
+    <div className="flex flex-col items-center px-4 md:px-12 lg:px-24 pb-16">
       <h1 className="text-2xl font-bold mb-2">Comparatore di Videogiochi</h1>
       <p className="mb-6">Qui puoi visualizzare la comparazione fra due videogiochi</p>
       {compareList.length === 0 && (
@@ -34,6 +35,9 @@ export default function Comparatore() {
       {compareList.length > 0 && compareList.length < 2 && (
         <p>Seleziona almeno due videogiochi per confrontarli.</p>
       )}
+      <Link to="/"
+        className="mt-8 inline-block px-6 py-2 rounded-lg bg-purple-600 text-white font-semibold shadow-md hover:bg-purple-700 transition"
+      >Torna alla Home</Link>
     </div>
   );
 }
