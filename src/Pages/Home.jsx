@@ -1,8 +1,7 @@
 import { useState, useCallback, useEffect, useContext, useRef } from 'react';
 import { GlobalContext } from '../Context/GlobalContext';
 import GameList from '../components/GameList';
-
-
+import CategorySelect from '../Partials/CategorySelect';
 
 function debounce(callback, delay) {
   let timer;
@@ -16,13 +15,29 @@ function debounce(callback, delay) {
 
 export default function Home() {
 
-
   const { videogames, searchVideogames, fetchSearchResults } = useContext(GlobalContext);
 
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(''); // <--- aggiungi questo stato
   const debounceRef = useRef(debounce(setDebouncedSearch, 500));
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category); // <--- aggiorna lo stato categoria
+  };
+
+  // ...existing code...
+
+  // Scegli la lista base (search o tutti)
+  const baseList = search.trim() === '' ? videogames : searchVideogames;
+
+  // Filtra per categoria se selezionata
+  const gameShowList = Array.isArray(baseList)
+    ? baseList.filter(game =>
+      !selectedCategory || game.category === selectedCategory
+    )
+    : [];
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -43,8 +58,6 @@ export default function Home() {
     }
   }, [debouncedSearch, fetchSearchResults]);
 
-  const gameShowList = search.trim() === '' ? videogames : searchVideogames
-
   const noResults = debouncedSearch.trim() !== '' &&
     search.trim() !== '' &&
     Array.isArray(gameShowList) &&
@@ -57,6 +70,9 @@ export default function Home() {
       <h1 className="text-center text-4xl font-bold text-gray-800 my-8">
         Trova i videogiochi che fanno per te!
       </h1>
+
+
+
 
       {/* Jumbotron con video */}
       <div className="relative w-full max-w-9xl mx-auto mb-8  overflow-hidden shadow-lg">
@@ -71,6 +87,11 @@ export default function Home() {
         <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
           <p className="text-white text-2xl font-semibold">Scopri nuovi mondi, trova il tuo prossimo gioco preferito!</p>
         </div>
+      </div>
+
+      {/* CategorySelect in alto a destra */}
+      <div className="w-full flex justify-end pr-8 mb-4">
+        <CategorySelect onCategoryChange={handleCategoryChange} />
       </div>
 
       <div className="flex flex-col items-center mb-8">

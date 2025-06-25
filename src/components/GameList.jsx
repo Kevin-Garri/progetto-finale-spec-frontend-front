@@ -101,20 +101,6 @@ export default function GameList({ videogames }) {
 
       {/* Mostra tutti i giochi se non è selezionata una categoria */}
       {!filteredCategory && renderGameCards(sortedVideogames)}
-
-      {/* Filtro per categoria */}
-      <div>
-        <CategorySelect onCategoryChange={setFilteredCategory} />
-        {filteredCategory && (
-          <div>
-            <h3>Risultati per categoria: {filteredCategory}</h3>
-            {filteredVideogames.length === 0
-              ? <p>Nessun gioco trovato per questa categoria.</p>
-              : renderGameCards(filteredVideogames)
-            }
-          </div>
-        )}
-      </div>
     </div>
   );
 }
