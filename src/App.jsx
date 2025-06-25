@@ -31,7 +31,7 @@ function App() {
               end
               className="pagina text-white font-semibold hover:text-purple-200 transition-colors"
             >
-              Compara
+              Confronta
             </NavLink>
             <NavLink
               to="/Preferiti"

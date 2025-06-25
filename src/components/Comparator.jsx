@@ -6,6 +6,19 @@ import { Link } from "react-router-dom";
 export default function Comparatore() {
   const { compareList } = useContext(GlobalContext);
 
+
+  // Scegli le proprietà da confrontare
+  const properties = [
+    { key: "title", label: "Nome" },
+    { key: "genre", label: "Genere" },
+    { key: "platform", label: "Piattaforma" },
+    { key: "price", label: "Prezzo" },
+    { key: "category", label: "Categoria" },
+    { key: "releaseDate", label: "Data di uscita" },
+    { key: "rating", label: "Valutazione" },
+    // aggiungi altre proprietà se necessario
+  ];
+
   return (
     <div className="flex flex-col items-center px-4 md:px-12 lg:px-24 pb-16">
       <h1 className="text-2xl text-white font-bold mb-2">Comparatore di Videogiochi</h1>
@@ -15,6 +28,7 @@ export default function Comparatore() {
       )}
 
       {compareList.length > 0 && (
+
         <div>
           <p className="text-xl font-bold text-white mb-4">
             Hai selezionato {compareList.length} videogiochi da confrontare
@@ -29,6 +43,64 @@ export default function Comparatore() {
               <GameCard key={game.id} videogame={game} />
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Tabella di confronto */}
+      {compareList.length >= 2 && (
+        <div className="overflow-x-auto mt-10 w-full max-w-4xl">
+          <table className="min-w-full bg-white rounded shadow">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 bg-gray-900 text-white text-left">Proprietà</th>
+                {compareList.map(game => (
+                  <th key={game.id} className="py-2 px-4 bg-purple-600 text-white text-left">
+                    {game.title}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+
+            <tbody>
+              {properties.map(prop => {
+                // Trova i valori della proprietà per tutti i giochi
+                const values = compareList.map(game => game[prop.key]);
+                // Per price il min è migliore, per rating il max è migliore
+                let bestValue, worstValue;
+                if (prop.key === "price") {
+                  // Solo numeri validi
+                  const numericValues = values.filter(v => typeof v === "number");
+                  bestValue = Math.min(...numericValues);
+                  worstValue = Math.max(...numericValues);
+                } else if (prop.key === "rating") {
+                  const numericValues = values.filter(v => typeof v === "number");
+                  bestValue = Math.max(...numericValues);
+                  worstValue = Math.min(...numericValues);
+                }
+                return (
+                  <tr key={prop.key} className="border-t">
+                    <td className="py-2 px-4 font-semibold bg-gray-900 text-white">{prop.label}</td>
+                    {compareList.map(game => {
+                      let cellClass = "";
+                      if (prop.key === "price" && typeof game[prop.key] === "number") {
+                        if (game[prop.key] === bestValue) cellClass = "bg-green-200 font-bold";
+                        if (game[prop.key] === worstValue) cellClass = "bg-red-200";
+                      }
+                      if (prop.key === "rating" && typeof game[prop.key] === "number") {
+                        if (game[prop.key] === bestValue) cellClass = "bg-green-200 font-bold";
+                        if (game[prop.key] === worstValue) cellClass = "bg-red-200";
+                      }
+                      return (
+                        <td key={game.id} className={`py-2 px-4 ${cellClass}`}>
+                          {game[prop.key] ?? "-"}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       )}
 
