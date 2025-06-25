@@ -4,7 +4,7 @@ import GameCard from "./GameCard";
 import { Link } from "react-router-dom";
 
 export default function Comparatore() {
-  const { compareList, removeFromCompare } = useContext(GlobalContext);
+  const { compareList } = useContext(GlobalContext);
 
   return (
     <div className="flex flex-col items-center px-4 md:px-12 lg:px-24 pb-16">
