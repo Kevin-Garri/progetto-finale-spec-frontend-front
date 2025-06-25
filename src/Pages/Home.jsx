@@ -20,11 +20,11 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(''); // <--- aggiungi questo stato
+  const [selectedCategory, setSelectedCategory] = useState('');
   const debounceRef = useRef(debounce(setDebouncedSearch, 500));
 
   const handleCategoryChange = (category) => {
-    setSelectedCategory(category); // <--- aggiorna lo stato categoria
+    setSelectedCategory(category);
   };
 
   // Scegli la lista base (search o tutti)
@@ -73,7 +73,7 @@ export default function Home() {
       {/* Jumbotron con video */}
       <div className="relative w-full max-w-7xl mx-auto mb-8  overflow-hidden shadow-lg">
         <video
-          className="w-full h-80 object-cover" // aumenta h-64 a h-80 o più
+          className="w-full h-80 object-cover"
           src="/Fortnite_Cinematic.mp4"
           autoPlay
           loop
