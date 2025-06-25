@@ -166,7 +166,7 @@ export function GlobalProvider({ children }) {
   }, [api_url]);
 
   // Recupera tutte le categorie disponibili dai videogiochi
-  const fetchAllCategories = async () => {
+  const fetchAllCategories = useCallback(async () => {
     try {
       const response = await fetch(`${api_url}/videogameses`);
       const data = await response.json();
@@ -175,7 +175,7 @@ export function GlobalProvider({ children }) {
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
-  };
+  }, [api_url]);
 
   // Recupera tutti i videogiochi di una specifica categoria
   const fetchCategories = async (queryCategory) => {
