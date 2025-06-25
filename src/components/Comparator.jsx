@@ -49,12 +49,13 @@ export default function Comparatore() {
       {/* Tabella di confronto */}
       {compareList.length >= 2 && (
         <div className="overflow-x-auto mt-10 w-full max-w-4xl">
-          <table className="min-w-full bg-white rounded shadow">
+
+          <table className="min-w-full bg-white rounded shadow border border-black">
             <thead>
               <tr>
-                <th className="py-2 px-4 bg-gray-900 text-white text-left">Proprietà</th>
+                <th className="py-2 px-4 bg-gray-900 text-white text-left border border-black">Proprietà</th>
                 {compareList.map(game => (
-                  <th key={game.id} className="py-2 px-4 bg-purple-600 text-white text-left">
+                  <th key={game.id} className="py-2 px-4 bg-purple-600 text-white text-left border border-black">
                     {game.title}
                   </th>
                 ))}
@@ -78,20 +79,20 @@ export default function Comparatore() {
                   worstValue = Math.min(...numericValues);
                 }
                 return (
-                  <tr key={prop.key} className="border-t">
-                    <td className="py-2 px-4 font-semibold bg-gray-900 text-white">{prop.label}</td>
+                  <tr key={prop.key} className="border-t border border-black">
+                    <td className="py-2 px-4 font-semibold bg-gray-900 text-white border border-black">{prop.label}</td>
                     {compareList.map(game => {
                       let cellClass = "";
                       if (prop.key === "price" && typeof game[prop.key] === "number") {
                         if (game[prop.key] === bestValue) cellClass = "bg-green-200 font-bold";
-                        if (game[prop.key] === worstValue) cellClass = "bg-red-200";
+                        else if (game[prop.key] === worstValue) cellClass = "bg-red-200";
                       }
                       if (prop.key === "rating" && typeof game[prop.key] === "number") {
                         if (game[prop.key] === bestValue) cellClass = "bg-green-200 font-bold";
-                        if (game[prop.key] === worstValue) cellClass = "bg-red-200";
+                        else if (game[prop.key] === worstValue) cellClass = "bg-red-200";
                       }
                       return (
-                        <td key={game.id} className={`py-2 px-4 ${cellClass}`}>
+                        <td key={game.id} className={`py-2 px-4 border border-black ${cellClass}`}>
                           {game[prop.key] ?? "-"}
                         </td>
                       );
