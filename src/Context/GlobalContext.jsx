@@ -3,15 +3,25 @@ import { createContext, useState, useEffect, useCallback } from 'react';
 export const GlobalContext = createContext();
 
 export function GlobalProvider({ children }) {
-
   const api_url = import.meta.env.VITE_API_URL;
 
+  // State principali dell'applicazione
   const [videogames, setVideogames] = useState([]);
   const [videogame, setVideogame] = useState("");
   const [searchVideogames, setSearchVideogames] = useState([]);
-  const [categoryVideogames, setCategoryVideogames] = useState([])
+  const [categoryVideogames, setCategoryVideogames] = useState([]);
   const [compareList, setCompareList] = useState([]);
+  const [favorites, setFavorites] = useState(() => {
+    // Recupera i preferiti da localStorage all'avvio
+    try {
+      const stored = localStorage.getItem("favorites");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
 
+  // Aggiunge un videogioco alla lista di confronto
   const addToCompare = async (videogame) => {
     if (videogame.imageUrl && videogame.price && videogame.rating) {
       setCompareList(prev =>
@@ -21,6 +31,7 @@ export function GlobalProvider({ children }) {
       );
     } else {
       try {
+        // Se mancano dettagli, li recupera dall'API
         const response = await fetch(`${api_url}/videogameses/${videogame.id}`);
         const data = await response.json();
         const detailedGame = data.videogames || data;
@@ -35,25 +46,17 @@ export function GlobalProvider({ children }) {
     }
   };
 
+  // Rimuove un videogioco dalla lista di confronto
   const removeFromCompare = (id) => {
     setCompareList(prev => prev.filter(game => game.id !== id));
   };
 
-  const [favorites, setFavorites] = useState(() => {
-    try {
-      const stored = localStorage.getItem("favorites");
-      return stored ? JSON.parse(stored) : [];
-    } catch {
-      return [];
-    }
-  });
-
+  // Aggiorna i preferiti su localStorage ogni volta che cambiano
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites])
+  }, [favorites]);
 
-  // Funzione per l'aggiunta ai preferiti
-
+  // Aggiunge un videogioco ai preferiti
   const addToFavorites = async (videogame) => {
     if (videogame.imageUrl) {
       setFavorites(prev =>
@@ -63,6 +66,7 @@ export function GlobalProvider({ children }) {
       );
     } else {
       try {
+        // Se mancano dettagli, li recupera dall'API
         const response = await fetch(`${api_url}/videogameses/${videogame.id}`);
         const data = await response.json();
         const detailedGame = data.videogames || data;
@@ -77,18 +81,18 @@ export function GlobalProvider({ children }) {
     }
   };
 
-  // Funzione per la rimozione dai preferiti 
-
+  // Rimuove un videogioco dai preferiti
   const removeFromFavorites = (videogameId) => {
     setFavorites(prev => prev.filter(fav => fav.id !== videogameId));
   };
-  // Fetch per la lista completa dei videgames
+
+  // Recupera tutti i videogiochi dall'API e aggiorna lo stato
   const fetchVideoGames = async () => {
     try {
       const response = await fetch(`${api_url}/videogameses`);
       const data = await response.json();
 
-      // Per ogni videogioco, faccio una fetch dettagliata per ottenere l'immagine
+      // Recupera dettagli aggiuntivi per ogni videogioco
       const detailedGamesPromises = data.map(game =>
         fetch(`${api_url}/videogameses/${game.id}`)
           .then(res => res.json())
@@ -96,10 +100,10 @@ export function GlobalProvider({ children }) {
             const detailed = detail.videogames || detail;
             return {
               ...game,
-              imageUrl: detailed.imageUrl // adatta il campo se diverso
+              imageUrl: detailed.imageUrl
             };
           })
-          .catch(() => game) // fallback se errore
+          .catch(() => game)
       );
 
       const detailedGamesResults = await Promise.allSettled(detailedGamesPromises);
@@ -113,12 +117,12 @@ export function GlobalProvider({ children }) {
     }
   };
 
+  // Recupera tutti i videogiochi al primo render
   useEffect(() => {
     fetchVideoGames();
   }, []);
 
-  // fetch per il singolo videogioco attraverso l'id
-
+  // Recupera i dettagli di un singolo videogioco tramite id
   const fetchVideoGameDetails = useCallback(async (id) => {
     try {
       const response = await fetch(`${api_url}/videogameses/${id}`);
@@ -130,14 +134,13 @@ export function GlobalProvider({ children }) {
     }
   }, [api_url]);
 
-  // fetch per l'utilizzo dell'input della ricerca attraverso una query inserita dall'utente
-
+  // Cerca videogiochi tramite query e aggiorna lo stato dei risultati
   const fetchSearchResults = useCallback(async (query) => {
     try {
       const response = await fetch(`${api_url}/videogameses?search=${query}`);
       const data = await response.json();
 
-      // Per ogni gioco trovato, recupera i dettagli (inclusa l'immagine)
+      // Recupera dettagli aggiuntivi per ogni risultato
       const detailedGamesPromises = data.map(game =>
         fetch(`${api_url}/videogameses/${game.id}`)
           .then(res => res.json())
@@ -145,7 +148,7 @@ export function GlobalProvider({ children }) {
             const detailed = detail.videogames || detail;
             return {
               ...game,
-              imageUrl: detailed.imageUrl // adatta il campo se diverso
+              imageUrl: detailed.imageUrl
             };
           })
           .catch(() => game)
@@ -162,8 +165,7 @@ export function GlobalProvider({ children }) {
     }
   }, [api_url]);
 
-  // fetch per tutte le categorie per la selezione delle categorie
-
+  // Recupera tutte le categorie disponibili dai videogiochi
   const fetchAllCategories = async () => {
     try {
       const response = await fetch(`${api_url}/videogameses`);
@@ -173,10 +175,9 @@ export function GlobalProvider({ children }) {
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
-  }
-  // fetch per il filtraggio delle categorie se si vuole applicare sulla lista principale
-  // (non è utilizzata attivamente nel codice)
+  };
 
+  // Recupera tutti i videogiochi di una specifica categoria
   const fetchCategories = async (queryCategory) => {
     try {
       const response = await fetch(`${api_url}/videogameses?category=${queryCategory}`);
@@ -185,8 +186,9 @@ export function GlobalProvider({ children }) {
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
-  }
+  };
 
+  // Oggetto che contiene tutti i valori e funzioni da fornire tramite il context
   const value = {
     videogames,
     fetchVideoGames,
@@ -205,6 +207,7 @@ export function GlobalProvider({ children }) {
     removeFromCompare
   };
 
+  // Ritorna il provider del context con tutti i valori e funzioni
   return (
     <GlobalContext.Provider value={value}>
       {children}

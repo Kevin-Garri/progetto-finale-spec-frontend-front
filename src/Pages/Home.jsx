@@ -25,12 +25,14 @@ export default function Home() {
   const debounceRef = useRef(debounce(setDebouncedSearch, 500));
 
   const handleSearch = (e) => {
-    setSearch(e.target.value)
+    setSearch(e.target.value);
     debounceRef.current(e.target.value);
+
+    // Rimuovi il messaggio quando il campo è vuoto
     if (e.target.value.trim() === '') {
-      setMessage("Gioco non trovato..riprovare con un altro nome")
+      setMessage('');
     } else {
-      setMessage("");
+      setMessage('');
     }
   }
 
@@ -44,6 +46,7 @@ export default function Home() {
   const gameShowList = search.trim() === '' ? videogames : searchVideogames
 
   const noResults = debouncedSearch.trim() !== '' &&
+    search.trim() !== '' &&
     Array.isArray(gameShowList) &&
     gameShowList.length === 0;
 

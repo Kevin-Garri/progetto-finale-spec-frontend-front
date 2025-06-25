@@ -3,9 +3,14 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 
 export default function GameCard({ videogame }) {
-
-  const { addToFavorites, removeFromFavorites, favorites, addToCompare, removeFromCompare, compareList } = useContext(GlobalContext)
-
+  const {
+    addToFavorites,
+    removeFromFavorites,
+    favorites,
+    addToCompare,
+    removeFromCompare,
+    compareList,
+  } = useContext(GlobalContext);
 
   const isFavorite = favorites.some(favorite => favorite.id === videogame.id);
   const isInCompare = compareList.some(game => game.id === videogame.id);
@@ -13,21 +18,58 @@ export default function GameCard({ videogame }) {
   return (
     <div>
       <div className="max-w-sm bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        {/* Immagine */}
         <img
           className="w-full h-48 object-cover"
           src={`/img/${videogame.imageUrl}`}
           alt={videogame.title}
         />
+
+        {/* Card Content */}
         <div className="p-4">
           <Link to={`/Dettagli/${videogame.id}`}>
-            <h2 className="text-xl font-bold text-gray-800 hover:underline cursor-pointer truncate whitespace-nowrap overflow-hidden w-full" title={videogame.title}>
+            <h2
+              className="text-xl font-bold text-gray-800 hover:underline cursor-pointer truncate whitespace-nowrap overflow-hidden w-full"
+              title={videogame.title}
+            >
               {videogame.title}
             </h2>
           </Link>
           <p className="text-sm text-gray-500 mb-2">{videogame.category}</p>
+
+          {/* Descrizione */}
+          {videogame.description && (
+            <p className="text-gray-800 mb-4">{videogame.description}</p>
+          )}
+
+          <div className="flex items-center justify-between">
+            {/* Prezzo */}
+            {videogame.price !== undefined &&
+              videogame.price !== null &&
+              videogame.price !== "" && (
+                <span className="text-lg font-semibold text-blue-600">
+                  €{videogame.price}
+                </span>
+              )}
+
+            {/* Rating */}
+            <div className="flex items-center">
+              {videogame.rating !== undefined &&
+                videogame.rating !== null &&
+                videogame.rating !== "" && (
+                  <>
+                    <span className="text-yellow-400 text-sm mr-1">★</span>
+                    <span className="text-sm text-gray-700">
+                      {videogame.rating}/10
+                    </span>
+                  </>
+                )}
+            </div>
+          </div>
         </div>
 
         <div className="flex gap-6 px-4 pb-4">
+          {/* Preferiti */}
           <button
             onClick={() =>
               isFavorite
@@ -35,10 +77,11 @@ export default function GameCard({ videogame }) {
                 : addToFavorites(videogame)
             }
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition 
-      ${isFavorite
+              ${isFavorite
                 ? "bg-pink-100 text-pink-600 border border-pink-400 hover:bg-pink-200"
-                : "bg-gray-100 text-gray-700 border border-gray-300 hover:bg-pink-100 hover:text-pink-600"}
-    `}
+                : "bg-gray-100 text-gray-700 border border-gray-300 hover:bg-pink-100 hover:text-pink-600"
+              }
+            `}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -56,6 +99,8 @@ export default function GameCard({ videogame }) {
             </svg>
             {isFavorite ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
           </button>
+
+          {/* Confronta */}
           <button
             onClick={() =>
               isInCompare
@@ -63,16 +108,16 @@ export default function GameCard({ videogame }) {
                 : addToCompare(videogame)
             }
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition
-    ${isInCompare
+              ${isInCompare
                 ? "bg-purple-100 text-purple-600 border border-purple-400 hover:bg-purple-200"
-                : "bg-purple-600 text-white border border-purple-700 hover:bg-purple-700"}
-  `}
+                : "bg-purple-600 text-white border border-purple-700 hover:bg-purple-700"
+              }
+            `}
           >
             {isInCompare ? "Rimuovere" : "Confronta"}
           </button>
         </div>
       </div>
-
     </div>
   );
 }

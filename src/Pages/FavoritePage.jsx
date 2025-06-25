@@ -1,6 +1,6 @@
 import { GlobalContext } from "../Context/GlobalContext";
 import { useContext } from "react";
-import GameCard from "../components/GameCard"; // importa GameCard
+import GameCard from "../components/GameCard";
 
 export default function FavoritePage() {
   const { favorites } = useContext(GlobalContext);
