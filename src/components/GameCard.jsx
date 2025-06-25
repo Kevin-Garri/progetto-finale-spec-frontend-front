@@ -109,8 +109,8 @@ export default function GameCard({ videogame }) {
             }
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition
               ${isInCompare
-                ? "bg-purple-100 text-purple-600 border border-purple-400 hover:bg-purple-200"
-                : "bg-purple-600 text-white border border-purple-700 hover:bg-purple-700"
+                ? "bg-orange-100 text-orange-600 border border-orange-400 hover:bg-orange-200"
+                : "bg-orange-500 text-white border border-orange-700 hover:bg-orange-600"
               }
             `}
           >

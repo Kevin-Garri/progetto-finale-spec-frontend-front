@@ -67,7 +67,7 @@ export default function Home() {
   return (
 
     <div>
-      <h1 className="text-center text-4xl font-bold text-gray-800 my-8">
+      <h1 className="text-center text-4xl font-bold text-white my-8">
         Trova i videogiochi che fanno per te!
       </h1>
 
@@ -75,7 +75,7 @@ export default function Home() {
 
 
       {/* Jumbotron con video */}
-      <div className="relative w-full max-w-9xl mx-auto mb-8  overflow-hidden shadow-lg">
+      <div className="relative w-full max-w-7xl mx-auto mb-8  overflow-hidden shadow-lg">
         <video
           className="w-full h-80 object-cover" // aumenta h-64 a h-80 o più
           src="/Fortnite_Cinematic.mp4"
@@ -96,7 +96,7 @@ export default function Home() {
 
       <div className="flex flex-col items-center mb-8">
         <input
-          className="w-full max-w-xl px-6 py-3 rounded-lg border-2 border-purple-300 focus:border-purple-700 focus:outline-none text-lg shadow-md"
+          className="w-full max-w-xl px-6 py-3 rounded-lg border-2 border-black focus:border-black focus:outline-none text-lg shadow-md"
           type="text"
           placeholder="Cerca un gioco..."
           value={search}

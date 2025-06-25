@@ -12,9 +12,13 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <GlobalProvider>
-      <div className="min-h-screen flex flex-col">
+      <div
+        className="min-h-screen flex flex-col bg-cover bg-center"
+        style={{ backgroundImage: "url('/img/27263.jpg')" }}
+      >
+
         <BrowserRouter>
-          <nav className="sticky top-0 z-50 flex justify-center gap-20 bg-purple-950/80 backdrop-blur-md p-8 shadow-md border-b border-purple-200">
+          <nav className="sticky top-0 z-50 flex justify-center gap-20 bg-purple-800/80 backdrop-blur-md p-8 shadow-md border-b border-purple-200">
             <NavLink
               to="/"
               end
