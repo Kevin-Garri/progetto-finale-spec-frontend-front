@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
 import { GlobalContext } from '../Context/GlobalContext';
-import CategorySelect from '../Partials/CategorySelect';
 import Card from '../components/GameCard';
 
 export default function GameList({ videogames }) {

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { GlobalContext } from '../Context/GlobalContext';
 import GameList from '../components/GameList';
 import CategorySelect from '../Partials/CategorySelect';
@@ -26,8 +26,6 @@ export default function Home() {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category); // <--- aggiorna lo stato categoria
   };
-
-  // ...existing code...
 
   // Scegli la lista base (search o tutti)
   const baseList = search.trim() === '' ? videogames : searchVideogames;
@@ -72,8 +70,6 @@ export default function Home() {
       </h1>
 
 
-
-
       {/* Jumbotron con video */}
       <div className="relative w-full max-w-7xl mx-auto mb-8  overflow-hidden shadow-lg">
         <video
@@ -106,8 +102,58 @@ export default function Home() {
         {noResults && <p className="mt-2 text-red-600 font-semibold">Non è stato trovato nessun gioco con questo nome</p>}
       </div>
       <div>
-        <GameList videogames={Array.isArray(gameShowList) ? gameShowList : []} />
+        {/* Mostra le prime 9 card */}
+        <GameList videogames={Array.isArray(gameShowList) ? gameShowList.slice(0, 9) : []} />
+
+        {/* Se ci sono più di 9 giochi, mostra la sezione feature */}
+        {Array.isArray(gameShowList) && gameShowList.length > 9 && (
+          <div className="flex justify-center items-center bg-gray-900 text-white py-8 gap-12 my-8 rounded-lg shadow-lg">
+            <div className="flex flex-col items-center">
+              <span className="text-4xl mb-2">☁️</span>
+              <span className="font-bold">Super fast</span>
+              <span className="text-sm">Instant digital download</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-4xl mb-2">🛡️</span>
+              <span className="font-bold">Reliable &amp; safe</span>
+              <span className="text-sm">Over 10,000 games</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-4xl mb-2">💬</span>
+              <span className="font-bold">Customer support</span>
+              <span className="text-sm">Human support 24/7</span>
+            </div>
+            {/* Trustpilot custom */}
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-green-500 text-xl">★</span>
+                <span className="font-semibold">Trustpilot</span>
+              </div>
+              <div className="flex gap-1 mb-1">
+                {[...Array(4)].map((_, i) => (
+                  <span
+                    key={i}
+                    className="bg-green-500 text-white rounded px-2 py-1 text-lg"
+                  >
+                    ★
+                  </span>
+                ))}
+                <span className="bg-gray-300 text-white rounded px-2 py-1 text-lg">
+                  ★
+                </span>
+              </div>
+              <div className="text-xs text-gray-400">
+                TrustScore 4.7 | 63,136 reviews
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Mostra le restanti card */}
+        {Array.isArray(gameShowList) && gameShowList.length > 9 && (
+          <GameList videogames={gameShowList.slice(9)} />
+        )}
       </div>
     </div>
-  )
+  );
 }
