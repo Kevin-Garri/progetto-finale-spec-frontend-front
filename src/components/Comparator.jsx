@@ -106,7 +106,7 @@ export default function Comparatore() {
       )}
 
       {compareList.length > 0 && compareList.length < 2 && (
-        <p>Seleziona almeno due videogiochi per confrontarli.</p>
+        <p className="text-white">Seleziona almeno due videogiochi per confrontarli.</p>
       )}
       <Link to="/"
         className="mt-8 inline-block px-6 py-2 rounded-lg bg-purple-600 text-white font-semibold shadow-md hover:bg-purple-700 transition border-2 border-black hover:border-purple-800"

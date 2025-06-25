@@ -66,7 +66,7 @@ export default function Home() {
 
     <div>
       <h1 className="text-center text-4xl font-bold text-white my-8">
-        Trova i videogiochi che fanno per te!
+        Trova i videogiochi che fanno per te con Bool-Gaming!
       </h1>
 
 
