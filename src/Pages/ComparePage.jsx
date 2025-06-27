@@ -10,3 +10,5 @@ export default function Compare() {
     </div>
   );
 }
+
+//Questa pagina mostra un titolo e include il componente che permette il confronto tra giochi.

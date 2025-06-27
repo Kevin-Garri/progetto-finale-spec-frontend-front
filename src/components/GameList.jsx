@@ -2,7 +2,9 @@ import { useState, useContext, useEffect } from 'react';
 import { GlobalContext } from '../Context/GlobalContext';
 import Card from '../components/GameCard';
 
+// Componente principale che visualizza una lista di videogiochi
 export default function GameList({ videogames }) {
+  // Estrae funzioni e dati dal context globale
   const {
     fetchAllCategories,
     addToFavorites,
@@ -12,12 +14,12 @@ export default function GameList({ videogames }) {
     compareList
   } = useContext(GlobalContext);
 
-  // Stati per ordinamento e filtro
-  const [sortField, setSortField] = useState('title');
-  const [sortOrder, setSortOrder] = useState('1');
-  const [filteredCategory, setFilteredCategory] = useState('');
+  // Stato locale per ordinare e filtrare i giochi
+  const [sortField, setSortField] = useState('title');     // Campo per ordinare (es. titolo)
+  const [sortOrder, setSortOrder] = useState('1');         // Ordine crescente ('1') o decrescente ('-1')
+  const [filteredCategory, setFilteredCategory] = useState(''); // Categoria selezionata per filtrare
 
-  // Funzione di ordinamento
+  // Funzione che ordina la lista in base al campo e all'ordine scelto
   function sortByField(videogames, field, order) {
     return [...videogames].sort((a, b) =>
       order === '1'
@@ -26,26 +28,23 @@ export default function GameList({ videogames }) {
     );
   }
 
-  // Ordinamento e filtro
+  // Applica ordinamento alla lista di videogiochi
   const sortedVideogames = sortByField(
     Array.isArray(videogames) ? videogames : [],
     sortField,
     sortOrder
   );
 
-  const filteredVideogames = filteredCategory
-    ? sortedVideogames.filter(vg => vg.category === filteredCategory)
-    : [];
-
-  // Carica le categorie al mount
+  // Quando il componente è montato, carica le categorie dal context
   useEffect(() => {
     fetchAllCategories();
   }, [fetchAllCategories]);
 
-  // Render dei bottoni di ordinamento
+  // Renderizza i bottoni per selezionare l'ordinamento
   function renderSortButtons() {
     return (
       <div className="flex justify-center gap-4 my-4">
+        {/* Bottone: ordina A-Z */}
         <button
           className={`px-4 py-2 rounded-lg shadow transition-colors duration-200 ${sortField === 'title' && sortOrder === '1'
             ? 'bg-purple-700 text-white'
@@ -58,6 +57,8 @@ export default function GameList({ videogames }) {
         >
           Titolo A-Z {sortField === 'title' && sortOrder === '1' && '↑'}
         </button>
+
+        {/* Bottone: ordina Z-A */}
         <button
           className={`px-4 py-2 rounded-lg shadow transition-colors duration-200 ${sortField === 'title' && sortOrder === '-1'
             ? 'bg-purple-700 text-white'
@@ -74,7 +75,7 @@ export default function GameList({ videogames }) {
     );
   }
 
-  // Render della lista giochi
+  // Renderizza la lista di giochi in formato griglia
   function renderGameCards(list) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 my-6 max-w-7xl mx-auto">
@@ -82,8 +83,8 @@ export default function GameList({ videogames }) {
           <Card
             key={videogame.id}
             videogame={videogame}
-            isFavorite={favorites.some(fav => fav.id === videogame.id)}
-            isInCompare={compareList.some(game => game.id === videogame.id)}
+            isFavorite={favorites.some(fav => fav.id === videogame.id)}         // Verifica se è nei preferiti
+            isInCompare={compareList.some(game => game.id === videogame.id)}    // Verifica se è nel confronto
             addToFavorites={addToFavorites}
             removeFromFavorites={removeFromFavorites}
             addToCompare={addToCompare}
@@ -93,12 +94,12 @@ export default function GameList({ videogames }) {
     );
   }
 
-  // Render principale
+  // Componente principale renderizzato
   return (
     <div className="videogames-list">
-      {renderSortButtons()}
+      {renderSortButtons()} {/* Sezione ordinamento */}
 
-      {/* Mostra tutti i giochi se non è selezionata una categoria */}
+      {/* Se non è selezionata alcuna categoria, mostra tutti i giochi ordinati */}
       {!filteredCategory && renderGameCards(sortedVideogames)}
     </div>
   );

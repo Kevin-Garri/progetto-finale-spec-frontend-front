@@ -3,6 +3,7 @@ import { GlobalContext } from '../Context/GlobalContext';
 import GameList from '../components/GameList';
 import CategorySelect from '../Partials/CategorySelect';
 
+//debounce: limita la frequenza con cui viene chiamata una funzione (callback) aspettando un certo tempo (delay) dopo l'ultimo input
 function debounce(callback, delay) {
   let timer;
   return (value) => {
@@ -14,20 +15,24 @@ function debounce(callback, delay) {
 }
 
 export default function Home() {
-
+  // Estrae dallo stato globale: lista giochi, risultati ricerca, funzione per cercare
   const { videogames, searchVideogames, fetchSearchResults } = useContext(GlobalContext);
 
+  // Stato per input ricerca, messaggi, valore ricerca "debounced" e categoria selezionata
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+
+  // Ref che contiene la funzione debounce per la ricerca
   const debounceRef = useRef(debounce(setDebouncedSearch, 500));
 
+  // Cambia la categoria selezionata
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
 
-  // Scegli la lista base (search o tutti)
+  // Sceglie la lista base: se non stai cercando nulla mostra tutti i giochi, altrimenti i risultati della ricerca
   const baseList = search.trim() === '' ? videogames : searchVideogames;
 
   // Filtra per categoria se selezionata
@@ -37,9 +42,10 @@ export default function Home() {
     )
     : [];
 
+  // Gestisce il cambiamento dell'input di ricerca
   const handleSearch = (e) => {
-    setSearch(e.target.value);
-    debounceRef.current(e.target.value);
+    setSearch(e.target.value);// aggiorna lo stato della ricerca
+    debounceRef.current(e.target.value);// aggiorna la ricerca "debounced"
 
     // Rimuovi il messaggio quando il campo è vuoto
     if (e.target.value.trim() === '') {
@@ -49,13 +55,14 @@ export default function Home() {
     }
   }
 
+  // Effetto che chiama la ricerca solo quando debouncedSearch cambia e non è vuoto
   useEffect(() => {
-
     if (debouncedSearch.trim() !== '') {
       fetchSearchResults(debouncedSearch);
     }
   }, [debouncedSearch, fetchSearchResults]);
 
+  // Variabile che indica se non ci sono risultati per la ricerca corrente
   const noResults = debouncedSearch.trim() !== '' &&
     search.trim() !== '' &&
     Array.isArray(gameShowList) &&

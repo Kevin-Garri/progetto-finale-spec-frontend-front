@@ -154,11 +154,15 @@ export function GlobalProvider({ children }) {
           .catch(() => game)
       );
 
+      // Attende che tutte le richieste per i dettagli dei videogiochi siano completate (anche se alcune falliscono)
       const detailedGamesResults = await Promise.allSettled(detailedGamesPromises);
+
+      // Filtra solo i risultati delle richieste che sono andate a buon fine
       const detailedGames = detailedGamesResults
         .filter(result => result.status === "fulfilled")
         .map(result => result.value);
 
+      // Aggiorna lo stato dei videogiochi trovati con i dettagli ottenuti
       setSearchVideogames(detailedGames);
     } catch (error) {
       console.error("Error fetching search results:", error);

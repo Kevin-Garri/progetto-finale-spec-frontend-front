@@ -4,7 +4,7 @@ import GameCard from "../components/GameCard";
 import { Link } from "react-router-dom";
 
 export default function FavoritePage() {
-  const { favorites } = useContext(GlobalContext);
+  const { favorites } = useContext(GlobalContext); // Ottiene la lista dei giochi preferiti dal global context
 
   return (
     <div className="flex flex-col items-center px-4 md:px-12 lg:px-24 pb-16">
@@ -13,6 +13,7 @@ export default function FavoritePage() {
       </h1>
       <h2 className="text-2xl font-bold mb-2 text-white ">La tua pagina dei preferiti</h2>
       <p className="text-center mb-6 text-white  ">Qui puoi visualizzare i tuoi giochi preferiti!</p>
+      {/* Se non ci sono preferiti, mostra un messaggio */}
       {favorites.length === 0 ? (
         <div className="flex justify-center items-center h-64">
           <p className="text-lg text-white  text-center">
@@ -20,13 +21,14 @@ export default function FavoritePage() {
           </p>
         </div>
       ) : (
+        // Se ci sono preferiti, mostra la griglia di GameCard
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
           {favorites.map(fav => (
-            <GameCard key={fav.id} videogame={fav} />
+            <GameCard key={fav.id} videogame={fav} /> // Mostra ogni gioco preferito usando GameCard
           ))}
         </div>
-
       )}
+      {/* Link per tornare alla Home */}
       <Link to="/"
         className="mt-8 inline-block px-6 py-2 rounded-lg bg-purple-600 text-white font-semibold shadow-md hover:bg-purple-700 transition border-2 border-black hover:border-purple-800"
       >Torna alla Home</Link>
