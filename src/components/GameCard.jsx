@@ -12,7 +12,9 @@ export default function GameCard({ videogame }) {
     compareList,
   } = useContext(GlobalContext);
 
+  // Controlla se il videogioco è presente nella lista dei preferiti
   const isFavorite = favorites.some(favorite => favorite.id === videogame.id);
+  // Controlla se il videogioco è presente nella lista di confronto
   const isInCompare = compareList.some(game => game.id === videogame.id);
 
   return (
