@@ -60,7 +60,7 @@ export default function Comparatore() {
                 {compareList.map(game => (
                   <th key={game.id} className="py-2 px-4 bg-purple-600 text-white text-left border border-black">
                     {game.title}
-                  </th>
+                  </th> //Poi per ogni gioco, viene aggiunta una colonna con il titolo del gioco.
                 ))}
               </tr>
             </thead>
@@ -73,7 +73,7 @@ export default function Comparatore() {
                 // Calcola il valore migliore/peggiore da evidenziare
                 let bestValue, worstValue;
                 if (prop.key === "price") {
-                  const numericValues = values.filter(v => typeof v === "number");
+                  const numericValues = values.filter(v => typeof v === "number");//Evidenziazione di valori migliori/peggiori
                   bestValue = Math.min(...numericValues);
                   worstValue = Math.max(...numericValues);
                 } else if (prop.key === "rating") {
@@ -101,7 +101,7 @@ export default function Comparatore() {
                       return (
                         <td key={game.id} className={`py-2 px-4 border border-black ${cellClass}`}>
                           {game[prop.key] ?? "-"}
-                        </td>
+                        </td>//Mostra il valore della proprietà (game[prop.key]), oppure "-" se non esiste per colorare la cella se è la migliore o la peggiore.
                       );
                     })}
                   </tr>
