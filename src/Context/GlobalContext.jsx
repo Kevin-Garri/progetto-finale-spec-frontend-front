@@ -22,10 +22,12 @@ export function GlobalProvider({ children }) {
   });
 
   // Aggiunge un videogioco alla lista di confronto
+  /*Verifichi se il videogioco ha già le informazioni minime per essere visualizzato nel confronto.
+  Se i dati ci sono, verifichi se è già nella lista (tramite some), e se non c’è, lo aggiungi usando lo spread operator [...prev, videogame].*/
   const addToCompare = async (videogame) => {
     if (videogame.imageUrl && videogame.price && videogame.rating) {
       setCompareList(prev =>
-        prev.some(game => game.id === videogame.id)
+        prev.some(game => game.id === videogame.id) //evitare duplicati nella lista di confronto
           ? prev
           : [...prev, videogame]
       );
@@ -34,9 +36,9 @@ export function GlobalProvider({ children }) {
         // Se mancano dettagli, li recupera dall'API
         const response = await fetch(`${api_url}/videogameses/${videogame.id}`);
         const data = await response.json();
-        const detailedGame = data.videogames || data;
+        const detailedGame = data.videogames || data; //gestisci entrambe le possibilità.
         setCompareList(prev =>
-          prev.some(game => game.id === detailedGame.id)
+          prev.some(game => game.id === detailedGame.id) //Serve a evitare duplicati nella lista di confronto. Se il gioco è già presente (con lo stesso id), non lo aggiungi di nuovo.
             ? prev
             : [...prev, detailedGame]
         );
@@ -47,8 +49,8 @@ export function GlobalProvider({ children }) {
   };
 
   // Rimuove un videogioco dalla lista di confronto
-  const removeFromCompare = (id) => {
-    setCompareList(prev => prev.filter(game => game.id !== id));
+  const removeFromCompare = (id) => { //Non modifica direttamente lo stato
+    setCompareList(prev => prev.filter(game => game.id !== id)); //Crea un nuovo array invece di modificarne uno esistente
   };
 
   // Aggiorna i preferiti su localStorage ogni volta che cambiano
@@ -92,7 +94,7 @@ export function GlobalProvider({ children }) {
       const response = await fetch(`${api_url}/videogameses`);
       const data = await response.json();
 
-      // Recupera dettagli aggiuntivi per ogni videogioco
+      // Per ogni videogioco, recupera i dettagli completi
       const detailedGamesPromises = data.map(game =>
         fetch(`${api_url}/videogameses/${game.id}`)
           .then(res => res.json())
@@ -106,9 +108,9 @@ export function GlobalProvider({ children }) {
           .catch(() => game)
       );
 
-      const detailedGamesResults = await Promise.allSettled(detailedGamesPromises);
+      const detailedGamesResults = await Promise.allSettled(detailedGamesPromises);// Attende che tutte le richieste per i dettagli dei videogiochi siano completate (anche se alcune falliscono) cosi da non bloccare l'applicazione.
       const detailedGames = detailedGamesResults
-        .filter(result => result.status === "fulfilled")
+        .filter(result => result.status === "fulfilled") //Filtra e raccoglie solo quelle riuscite
         .map(result => result.value);
 
       setVideogames(detailedGames);

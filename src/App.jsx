@@ -11,12 +11,12 @@ import Footer from "./components/Footer";
 
 function App() {
   return (
-    <GlobalProvider>
+    <GlobalProvider> {/* GlobalProvider è un componente che fornisce lo stato globale all'applicazione, permette di accedere ai dati e alle funzioni definite nel contesto */}
       <div
         className="min-h-screen flex flex-col bg-cover bg-center"
         style={{ backgroundImage: "url('/img/27263.jpg')" }}
       >
-
+        {/* BrowserRouter è un componente fornito da react-router-dom, Tutti i componenti con <Route>, <Link>, <Navigate>, ecc. devono essere usati all'interno*/}
         <BrowserRouter>
           <nav className="sticky top-0 z-50 flex justify-center gap-20 bg-purple-800/80 backdrop-blur-md p-8 shadow-md border-b border-purple-200">
             <NavLink
@@ -52,6 +52,7 @@ function App() {
             </div>
           </nav>
           <div className="flex-1">
+            {/* Routes definisce le rotte dell'applicazione, ogni Route rappresenta una pagina, path è l'URL della pagina e element è il componente da renderizzare */}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/Compara" element={<ComparePage />} />
