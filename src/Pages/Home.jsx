@@ -78,7 +78,7 @@ export default function Home() {
 
 
       {/* Jumbotron con video */}
-      <div className="relative w-full max-w-7xl mx-auto mb-8  overflow-hidden shadow-lg">
+      <div className="relative w-full max-w-9xl mx-auto mb-8  overflow-hidden shadow-lg">
         <video
           className="w-full h-80 object-cover"
           src="/Fortnite_Cinematic.mp4"

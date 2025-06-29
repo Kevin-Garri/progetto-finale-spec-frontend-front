@@ -7,7 +7,7 @@ export default function PageDetails() {
 
   const { id } = useParams();//hook fornito da React Router che permette di accedere ai parametri dinamici presenti nell’URL
 
-  console.log(id);
+
 
   // Estrae la funzione per fetchare i dettagli e lo stato del videogioco dal contesto globale
   const { fetchVideoGameDetails, videogame } = useContext(GlobalContext);
