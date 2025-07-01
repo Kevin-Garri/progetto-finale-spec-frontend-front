@@ -60,9 +60,10 @@ export function GlobalProvider({ children }) {
 
   // Aggiunge un videogioco ai preferiti
   const addToFavorites = async (videogame) => {
+    //Se il videogioco ha già l'immagine (presumibilmente ha anche altri dettagli)
     if (videogame.imageUrl) {
       setFavorites(prev =>
-        prev.some(fav => fav.id === videogame.id)
+        prev.some(fav => fav.id === videogame.id)//Controlla se è già presente nei preferiti (evita duplicati tramite ID)
           ? prev
           : [...prev, videogame]
       );
@@ -71,9 +72,9 @@ export function GlobalProvider({ children }) {
         // Se mancano dettagli, li recupera dall'API
         const response = await fetch(`${api_url}/videogameses/${videogame.id}`);
         const data = await response.json();
-        const detailedGame = data.videogames || data;
+        const detailedGame = data.videogames || data; //Estrae i dettagli del videogioco 
         setFavorites(prev =>
-          prev.some(fav => fav.id === detailedGame.id)
+          prev.some(fav => fav.id === detailedGame.id)//Evita di aggiungere giochi già presenti
             ? prev
             : [...prev, detailedGame]
         );
@@ -108,7 +109,7 @@ export function GlobalProvider({ children }) {
           .catch(() => game)
       );
 
-      const detailedGamesResults = await Promise.allSettled(detailedGamesPromises);// Attende che tutte le richieste per i dettagli dei videogiochi siano completate (anche se alcune falliscono) cosi da non bloccare l'applicazione.
+      const detailedGamesResults = await Promise.allSettled(detailedGamesPromises);// Attende che tutte le richieste per i dettagli dei videogiochi siano completate (anche se alcune falliscono) Evita che un singolo errore blocchi tutto, cosi da non bloccare l'applicazione.
       const detailedGames = detailedGamesResults
         .filter(result => result.status === "fulfilled") //Filtra e raccoglie solo quelle riuscite
         .map(result => result.value);
@@ -136,13 +137,13 @@ export function GlobalProvider({ children }) {
     }
   }, [api_url]);
 
-  // Cerca videogiochi tramite query e aggiorna lo stato dei risultati
+  // Cerca videogiochi tramite query e aggiorna lo stato dei risultati, Crea la funzione con useCallback per evitare che venga ricreata a ogni render.
   const fetchSearchResults = useCallback(async (query) => {
     try {
-      const response = await fetch(`${api_url}/videogameses?search=${query}`);
+      const response = await fetch(`${api_url}/videogameses?search=${query}`); //una query è una richiesta di informazioni fatta a un database
       const data = await response.json();
 
-      // Recupera dettagli aggiuntivi per ogni risultato
+      // Recupera dettagli aggiuntivi per ogni risultato del gioco
       const detailedGamesPromises = data.map(game =>
         fetch(`${api_url}/videogameses/${game.id}`)
           .then(res => res.json())
@@ -159,7 +160,7 @@ export function GlobalProvider({ children }) {
       // Attende che tutte le richieste per i dettagli dei videogiochi siano completate (anche se alcune falliscono)
       const detailedGamesResults = await Promise.allSettled(detailedGamesPromises);
 
-      // Filtra solo i risultati delle richieste che sono andate a buon fine
+      // Filtra solo i risultati delle richieste che sono andate a buon fine, Mantiene solo i giochi i cui dettagli sono stati caricati correttamente.
       const detailedGames = detailedGamesResults
         .filter(result => result.status === "fulfilled")
         .map(result => result.value);
@@ -186,7 +187,7 @@ export function GlobalProvider({ children }) {
   // Recupera tutti i videogiochi di una specifica categoria
   const fetchCategories = async (queryCategory) => {
     try {
-      const response = await fetch(`${api_url}/videogameses?category=${queryCategory}`);
+      const response = await fetch(`${api_url}/videogameses?category=${queryCategory}`); //queryCategory è il filtro che usiamo usare per ottenere solo i videogiochi di una certa categoria
       const data = await response.json();
       setVideogames(data);
     } catch (error) {

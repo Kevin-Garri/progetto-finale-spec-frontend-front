@@ -24,7 +24,7 @@ export default function Home() {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  // Ref che contiene la funzione debounce per la ricerca
+  // Ref che contiene la funzione debounce per la ricerca (debounce)
   const debounceRef = useRef(debounce(setDebouncedSearch, 500));
 
   // Cambia la categoria selezionata
@@ -42,7 +42,7 @@ export default function Home() {
     )
     : [];
 
-  // Gestisce il cambiamento dell'input di ricerca
+  // Gestisce il cambiamento dell'input di ricerca (searchbar, debounce)
   const handleSearch = (e) => {
     setSearch(e.target.value);// aggiorna lo stato della ricerca
     debounceRef.current(e.target.value);// aggiorna la ricerca "debounced"
@@ -55,14 +55,14 @@ export default function Home() {
     }
   }
 
-  // Effetto che chiama la ricerca solo quando debouncedSearch cambia e non è vuoto
+  // Effetto che chiama la ricerca solo quando debouncedSearch cambia e non è vuoto (debounce)
   useEffect(() => {
     if (debouncedSearch.trim() !== '') {
       fetchSearchResults(debouncedSearch);
     }
   }, [debouncedSearch, fetchSearchResults]);
 
-  // Variabile che indica se non ci sono risultati per la ricerca corrente
+  // Variabile che indica se non ci sono risultati per la ricerca corrente (debounce)
   const noResults = debouncedSearch.trim() !== '' &&
     search.trim() !== '' &&
     Array.isArray(gameShowList) &&
