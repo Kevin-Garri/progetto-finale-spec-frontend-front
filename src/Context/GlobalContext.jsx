@@ -3,7 +3,7 @@ import { createContext, useState, useEffect, useCallback } from 'react';
 export const GlobalContext = createContext();
 
 export function GlobalProvider({ children }) {
-  const api_url = import.meta.env.VITE_API_URL;
+  const api_url = import.meta.env.VITE_API_URL; //permette di accedere all’URL dell’API
 
   // State principali dell'applicazione
   const [videogames, setVideogames] = useState([]);
@@ -120,10 +120,10 @@ export function GlobalProvider({ children }) {
     }
   };
 
-  // Recupera tutti i videogiochi al primo render
+  // Recupera tutti i videogiochi al primo render(useEffect hook che ti permette di eseguire il codice dopo che il componente è stato renderizzato)
   useEffect(() => {
     fetchVideoGames();
-  }, []);
+  }, []);//dipendenze
 
   // Recupera i dettagli di un singolo videogioco tramite id
   const fetchVideoGameDetails = useCallback(async (id) => {
@@ -172,12 +172,25 @@ export function GlobalProvider({ children }) {
     }
   }, [api_url]);
 
-  // Recupera tutte le categorie disponibili dai videogiochi
+  //funzione asincrona chiamata fetchAllCategories, avvolta in useCallback (di React) per evitare che venga ricreata inutilmente ogni volta che il componente si aggiorna.
   const fetchAllCategories = useCallback(async () => {
     try {
       const response = await fetch(`${api_url}/videogameses`);
       const data = await response.json();
-      const categories = Array.from(new Set(data.map(videogame => videogame.category)));
+
+      const seenCategories = {}; //seenCategories è un oggetto che tiene traccia delle categorie già viste
+      const categories = []; // categories è un array che conterrà le categorie uniche
+
+      /*Estrai la categoria (videogame.category), Controlli se non è già presente in seenCategories,Se non c'è, la segni come già vista e la aggiungi all'array categories*/
+      data.forEach(videogame => {
+        const category = videogame.category;
+        if (!seenCategories[category]) {
+          seenCategories[category] = true;
+          categories.push(category);
+        }
+      });
+
+      //Aggiorna lo stato React categoryVideogames con l’array di categorie uniche. Serve per mostrarle in un menu a tendina o per filtrare videogiochi.
       setCategoryVideogames(categories);
     } catch (error) {
       console.error("Error fetching search results:", error);

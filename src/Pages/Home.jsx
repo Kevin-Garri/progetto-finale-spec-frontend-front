@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import { GlobalContext } from '../Context/GlobalContext';
 import GameList from '../components/GameList';
 import CategorySelect from '../Partials/CategorySelect';
@@ -24,36 +24,40 @@ export default function Home() {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  // Ref che contiene la funzione debounce per la ricerca (debounce)
-  const debounceRef = useRef(debounce(setDebouncedSearch, 500));
+  //Crea una funzione che aggiorna lo stato debouncedSearch, ma solo dopo che l'utente smette di digitare per 500 millisecondi. useCallback memoizza la funzione per evitare che venga ricreata ad ogni render. debounce è una tecnica per limitare quante volte viene eseguita una funzione (spesso utile per input o ricerche). Evitare chiamate inutili alla ricerca mentre l’utente sta ancora digitando.
+  const debouncedSearchCallback = useCallback( //Usa useMemo quando vuoi salvare il risultato del calcolo da una funzione “pesante” (tipo filter, map, sort ecc.) per evitare ricalcoli inutili. quindi meglio usare useCallback quando vuoi salvare una funzione.
+    debounce((value) => {
+      setDebouncedSearch(value);
+    }, 500),
+    []
+  );
 
-  // Cambia la categoria selezionata
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-  };
-
-  // Sceglie la lista base: se non stai cercando nulla mostra tutti i giochi, altrimenti i risultati della ricerca
-  const baseList = search.trim() === '' ? videogames : searchVideogames;
-
-  // Filtra per categoria se selezionata
-  const gameShowList = Array.isArray(baseList)
-    ? baseList.filter(game =>
-      !selectedCategory || game.category === selectedCategory
-    )
-    : [];
-
-  // Gestisce il cambiamento dell'input di ricerca (searchbar, debounce)
   const handleSearch = (e) => {
-    setSearch(e.target.value);// aggiorna lo stato della ricerca
-    debounceRef.current(e.target.value);// aggiorna la ricerca "debounced"
-
-    // Rimuovi il messaggio quando il campo è vuoto
+    setSearch(e.target.value); //setSearch aggiorna il valore scritto nella barra di ricerca.
+    debouncedSearchCallback(e.target.value); //debouncedSearchCallback imposta il valore "debounced" (ritardato) per attivare una ricerca solo dopo che l'utente ha smesso di digitare.
     if (e.target.value.trim() === '') {
       setMessage('');
     } else {
       setMessage('');
     }
-  }
+  };
+
+  //Quando l’utente seleziona una categoria (azione probabilmente eseguita dal componente CategorySelect), il valore viene salvato nello stato selectedCategory. Serve poi per filtrare i giochi da mostrare, in base alla categoria scelta.
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+  // è un operatore ternario. Se la stringa è vuota, assegna videogames a baseList; altrimenti assegna searchVideogames.
+  const baseList = search.trim() === '' ? videogames : searchVideogames;//trim rimuove spazi bianchi
+
+  // Filtra per categoria se selezionata
+  const gameShowList = Array.isArray(baseList)//array.isArray Controlla se baseList è davvero un array. Se sì, prosegue con il filtro. Se no, restituisce un array vuoto
+    ? baseList.filter(game => //Crea un nuovo array filtrando gli elementi dell'array
+      !selectedCategory || game.category === selectedCategory //Se non è stata selezionata nessuna categoria tutti i giochi vengono inclusi. Se è selezionata, allora vengono inclusi solo i giochi che appartengono a quella categoria.
+    )
+    : [];
+
+
 
   // Effetto che chiama la ricerca solo quando debouncedSearch cambia e non è vuoto (debounce)
   useEffect(() => {
