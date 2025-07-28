@@ -12,8 +12,9 @@ export default function GameCard({ videogame }) {
     compareList,
   } = useContext(GlobalContext);
 
-  // Controlla se il videogioco è presente nella lista dei preferiti
-  const isFavorite = favorites.some(favorite => favorite.id === videogame.id);//.some(...) per verificare se almeno uno degli elementi ha lo stesso id del videogame corrente.
+  // Controlla se il videogioco è presente nella lista dei preferiti (=== operatore di confronto per verificare se due valori sono uguali)
+  const isFavorite = favorites.some(favorite => favorite.id === videogame.id);//.some(...) per verificare se almeno uno degli elementi ha lo stesso id del videogame corrente. Metodo che controlla se almeno 1 elemento dell'array soddisfa la condizione data
+
   // Controlla se il videogioco è presente nella lista di confronto
   const isInCompare = compareList.some(game => game.id === videogame.id);
 
@@ -75,7 +76,7 @@ export default function GameCard({ videogame }) {
           <button
             onClick={() =>
               isFavorite
-                ? removeFromFavorites(videogame.id)
+                ? removeFromFavorites(videogame.id) //operatore ternario. Controlla se il gioco è già nella lista dei preferiti. Se sì, rimuovilo, altrimenti aggiungilo
                 : addToFavorites(videogame)
             }
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition 
@@ -106,7 +107,7 @@ export default function GameCard({ videogame }) {
           <button
             onClick={() =>
               isInCompare
-                ? removeFromCompare(videogame.id)
+                ? removeFromCompare(videogame.id) // operatore ternario. Controlla se il gioco è già nella lista di confronto. Se sì, rimuovilo, altrimenti aggiungilo
                 : addToCompare(videogame)
             }
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition

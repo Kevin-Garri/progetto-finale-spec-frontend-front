@@ -24,7 +24,7 @@ export default function Home() {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
-  //Crea una funzione che aggiorna lo stato debouncedSearch, ma solo dopo che l'utente smette di digitare per 500 millisecondi. useCallback memoizza la funzione per evitare che venga ricreata ad ogni render. debounce è una tecnica per limitare quante volte viene eseguita una funzione (spesso utile per input o ricerche). Evitare chiamate inutili alla ricerca mentre l’utente sta ancora digitando.
+  //Crea una funzione che aggiorna lo stato debouncedSearch, ma solo dopo che l'utente smette di digitare per 500 millisecondi. useCallback memorizza la funzione per evitare che venga ricreata ad ogni render. debounce è una tecnica per limitare quante volte viene eseguita una funzione (spesso utile per input o ricerche). Evitare chiamate inutili alla ricerca mentre l’utente sta ancora digitando.
   const debouncedSearchCallback = useCallback( //Usa useMemo quando vuoi salvare il risultato del calcolo da una funzione “pesante” (tipo filter, map, sort ecc.) per evitare ricalcoli inutili. quindi meglio usare useCallback quando vuoi salvare una funzione.
     debounce((value) => {
       setDebouncedSearch(value);
@@ -33,16 +33,16 @@ export default function Home() {
   );
 
   const handleSearch = (e) => {
-    setSearch(e.target.value); //setSearch aggiorna il valore scritto nella barra di ricerca.
+    setSearch(e.target.value); //setSearch aggiorna il valore scritto nella barra di ricerca. e.target.value è il valore attuale digitato nella barra di ricerca.
     debouncedSearchCallback(e.target.value); //debouncedSearchCallback imposta il valore "debounced" (ritardato) per attivare una ricerca solo dopo che l'utente ha smesso di digitare.
-    if (e.target.value.trim() === '') {
+    if (e.target.value.trim() === '') { //prende il valore scritto dall’utente nella barra di ricerca con e.target.value, Usa .trim() per rimuovere gli spazi vuoti, Controlla se, dopo aver tolto gli spazi, la stringa è vuota ('')
       setMessage('');
     } else {
       setMessage('');
     }
   };
 
-  //Quando l’utente seleziona una categoria (azione probabilmente eseguita dal componente CategorySelect), il valore viene salvato nello stato selectedCategory. Serve poi per filtrare i giochi da mostrare, in base alla categoria scelta.
+  //Quando l’utente seleziona una categoria, il valore viene salvato nello stato selectedCategory. Serve poi per filtrare i giochi da mostrare, in base alla categoria scelta.
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
@@ -52,25 +52,27 @@ export default function Home() {
 
   // Filtra per categoria se selezionata
   const gameShowList = Array.isArray(baseList)//array.isArray Controlla se baseList è davvero un array. Se sì, prosegue con il filtro. Se no, restituisce un array vuoto
-    ? baseList.filter(game => //Crea un nuovo array filtrando gli elementi dell'array
-      !selectedCategory || game.category === selectedCategory //Se non è stata selezionata nessuna categoria tutti i giochi vengono inclusi. Se è selezionata, allora vengono inclusi solo i giochi che appartengono a quella categoria.
+    ? baseList.filter(game => //Crea un nuovo array contenente solo gli elementi che soddisfano una certa condizione.
+      !selectedCategory || game.category === selectedCategory //Se non c’è nessuna categoria selezionata(!selectedCategory è true quando selectedCategory è falsy, cioè null, undefined, ''), Oppure se la categoria del gioco(game.category) corrisponde a quella selezionata(selectedCategory), allora il gioco viene incluso nel risultato.
     )
     : [];
 
 
 
   // Effetto che chiama la ricerca solo quando debouncedSearch cambia e non è vuoto (debounce)
-  useEffect(() => {
-    if (debouncedSearch.trim() !== '') {
-      fetchSearchResults(debouncedSearch);
+  useEffect(() => {//è un hook di React che serve a eseguire del codice in risposta a cambiamenti di stato o props, o al montaggio del componente. monitora debouncedSearch.
+    if (debouncedSearch.trim() !== '') { //Controlla se debouncedSearch non è una stringa vuota (dopo aver tolto eventuali spazi con .trim()).
+      fetchSearchResults(debouncedSearch);//Se c’è del testo (cioè l’utente ha scritto qualcosa), allora chiama la funzione fetchSearchResults passando proprio debouncedSearch come parametro.
     }
-  }, [debouncedSearch, fetchSearchResults]);
+  }, [debouncedSearch, fetchSearchResults]);//dipendenze
 
   // Variabile che indica se non ci sono risultati per la ricerca corrente (debounce)
+  //noResults sarà true solo se l’utente ha cercato qualcosa di non vuoto e il risultato della ricerca è un array vuoto.
   const noResults = debouncedSearch.trim() !== '' &&
-    search.trim() !== '' &&
-    Array.isArray(gameShowList) &&
-    gameShowList.length === 0;
+    search.trim() !== '' && //Trim Serve a rimuovere gli spazi bianchi all’inizio e alla fine di una stringa.
+    Array.isArray(gameShowList) && // array.isArray è un metodo statico di JavaScript per verificare se una variabile è un array, ritorna true se la variabile è un array, altrimenti false.
+    gameShowList.length === 0; //Controlla se l’array gameShowList è vuoto (cioè non contiene elementi). Se length è zero, vuol dire che non ci sono risultati da mostrare.
+
 
 
   return (

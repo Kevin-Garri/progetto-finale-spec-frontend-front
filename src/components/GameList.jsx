@@ -19,20 +19,21 @@ export default function GameList({ videogames }) {
   const [sortOrder, setSortOrder] = useState('1');         // Ordine crescente ('1') o decrescente ('-1')
   const [filteredCategory, setFilteredCategory] = useState(''); // Categoria selezionata per filtrare
 
-  // Funzione che ordina la lista in base al campo e all'ordine scelto
-  function sortByField(videogames, field, order) {
-    return [...videogames].sort((a, b) =>
+  // Questa funzione serve a ordinare un array di videogiochi in ordine crescente o decrescente, a seconda del valore di order
+  function sortByField(videogames, field, order) {//field il nome della proprietà per cui vuoi ordinare, order stringa che indica l'ordine ('1' per crescente, '-1' per decrescente)
+    return [...videogames].sort((a, b) =>//...videogames crea una copia dell’array originale per non modificarlo direttamente, sort ordina gli elementi dell'array
       order === '1'
-        ? a[field].localeCompare(b[field])
-        : b[field].localeCompare(a[field])
+        ///localeCompare confronta due stringhe in base alla localizzazione, utile per ordinare testi
+        ? a[field].localeCompare(b[field]) // ordine crescente (A → Z)
+        : b[field].localeCompare(a[field]) // ordine decrescente (Z → A)
     );
-  }
+  }//se l'utente ha scelto 1 ordina in modo crescente, altrimenti in modo decrescente
 
   // Applica ordinamento alla lista di videogiochi
-  const sortedVideogames = sortByField(
-    Array.isArray(videogames) ? videogames : [],
-    sortField,
-    sortOrder
+  const sortedVideogames = sortByField( //sortbyfield È la funzione che esegue realmente l’ordinamento.
+    Array.isArray(videogames) ? videogames : [], //verifica se videogames è effettivamente un array: Se sì → usa videogames, Se no → usa un array vuoto
+    sortField, //È una stringa che rappresenta il nome del campo da usare per l'ordinamento.
+    sortOrder//È una stringa che indica l’ordine: '1' per crescente, '0' o altro per decrescente
   );
 
   // Quando il componente è montato, carica le categorie dal context
@@ -99,7 +100,7 @@ export default function GameList({ videogames }) {
     <div className="videogames-list">
       {renderSortButtons()} {/* Sezione ordinamento */}
 
-      {/* Se non è selezionata alcuna categoria, mostra tutti i giochi ordinati */}
+      {/* Se non è selezionata alcuna categoria, mostra tutti i giochi ordinati. Se non c’è nessuna categoria selezionata, allora esegue la funzione renderGameCards(sortedVideogames). && Serve a verificare se due condizioni sono entrambe vere*/}
       {!filteredCategory && renderGameCards(sortedVideogames)}
     </div>
   );
